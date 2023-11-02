@@ -2,8 +2,8 @@
 """
 Python script that returns a TODO list progress for a given employee ID.
 
-This script fetches data from the API to retrieve and analyze the TODO list progress
-of a specific employee based on the employee ID.
+This script fetches data from the API to retrieve
+and analyze the TODO list progress.
 """
 
 import json
@@ -11,7 +11,7 @@ import requests
 from sys import argv
 
 if __name__ == "__main__":
-    """Step 1: Fetch employee information from the API based on the provided employee ID."""
+    """Step 1: Fetch employee information from the API."""
     request_employee = requests.get(
         'https://jsonplaceholder.typicode.com/users/{}/'.format(argv[1]))
     employee = json.loads(request_employee.text)
