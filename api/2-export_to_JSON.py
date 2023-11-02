@@ -43,8 +43,6 @@ if __name__ == "__main__":
 
     json_to_dump = {argv[1]: task_list}
 
-    """ 
-    Step 4: Exporting the analyzed data to a JSON file.
-    """
+    """ Step 4: Exporting the analyzed data to a JSON file."""
     with open('{}.json'.format(argv[1]), mode='w') as file:
         json.dump(json_to_dump, file)
