@@ -1,54 +1,51 @@
 #!/usr/bin/python3
+"""
+Python script that returns a TODO list progress for a given employee ID.
+
+This script fetches data from the JSONPlaceholder API to retrieve and analyze the TODO list progress
+of a specific employee based on the provided employee ID.
+"""
+
 import json
 import requests
 from sys import argv
 
-# Check if the script is executed as the main program
 if __name__ == "__main__":
-    """ Functions for gathering data from an API """
-
-    # Send a GET request to retrieve user data based on the provided user ID
+    """Step 1: Fetch employee information from the JSONPlaceholder API based on the provided employee ID."""
     request_employee = requests.get(
         'https://jsonplaceholder.typicode.com/users/{}/'.format(argv[1]))
-
-    # Parse the JSON response into a Python dictionary
     employee = json.loads(request_employee.text)
-
-    # Extract relevant user information
     employee_name = employee.get("name")
     USERNAME = employee.get("username")
 
-    # Send a GET request to retrieve the user's TODO list
+    """" Step 2: Fetch the employee's TODO list from the API."""
     request_todos = requests.get(
         'https://jsonplaceholder.typicode.com/users/{}/todos'.format(argv[1]))
-
-    # Initialize an empty list to store task data
-    tasks = []
-
-    # Parse the JSON response into a Python list
+    tasks = {}
     employee_todos = json.loads(request_todos.text)
 
-    # Iterate through each TODO item
+    USER_ID = argv[1]
+
+    """Step 3: Analyze and process the TODO list data."""
     for dictionary in employee_todos:
-        USER_ID = dictionary.get("userId")
+        USER_ID = dictionary.get("user")
         TASK_TITLE = dictionary.get("title")
         TASK_COMPLETED_STATUS = dictionary.get("completed")
+        tasks.update({TASK_TITLE: TASK_COMPLETED_STATUS})
 
-        # Construct a dictionary for each task containing task title, completion status, and username
-        task_data = {
-            "task": TASK_TITLE,
-            "completed": TASK_COMPLETED_STATUS,
+    task_list = []
+    for k, v in tasks.items():
+        task_list.append({
+            "task": k,
+            "completed": v,
             "username": USERNAME
-        }
+        })
 
-        # Append the task data to the list of tasks
-        tasks.append(task_data)
+    json_to_dump = {argv[1]: task_list}
 
-    # Create a dictionary with user ID and the list of tasks
-    result = {
-        "USER_ID": USER_ID,
-        "tasks": tasks
-    }
+    """
+    Step 4: Exporting the analyzed data to a JSON file.
+    """
+    with open('{}.json'.format(argv[1]), mode='w') as file:
+        json.dump(json_to_dump, file)
 
-    # Print the result as a nicely formatted JSON string
-    print(json.dumps(result, indent=2))
