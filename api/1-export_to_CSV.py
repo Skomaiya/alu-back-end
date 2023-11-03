@@ -55,6 +55,6 @@ if __name__ == "__main__":
         Create and write the data to a CSV file.
     """
     with open(f'{USER_ID}.csv', 'w', encoding="UTF8", newline='') as user:
-        writer = csv.writer(user)
+        writer = csv.writer(user, delimiter=',', quoting=csv.QUOTE_ALL)
         for k, v in tasks.items():
             writer.writerow([USER_ID, userName, v, k])
