@@ -8,7 +8,7 @@ import requests
 from sys import argv
 
 
-""" 
+"""
     Define HTTP headers for the API requests
 """
 headers = {
@@ -16,16 +16,15 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-""" 
+"""
     Define the header for the CSV file
 """
-csvheader = ["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"]
 
 if __name__ == "__main__":
     """Get the user ID from the command-line argument"""
-    user_id = argv[1]  
+    user_id = argv[1]
     """
-        Step 1: Retrieve user information from the JSONPlaceholder API using the provided user ID.
+        Step 1: Retrieve user information from the JSONPlaceholder API.
     """
     request_employee = requests.get(
         f'https://jsonplaceholder.typicode.com/users/{user_id}')
@@ -33,7 +32,7 @@ if __name__ == "__main__":
     employee_name = employee.get("name")
     userName = employee.get("username")
 
-    """     
+    """
         Step 2: Retrieve the user's tasks from the API.
         """
     request_todos = requests.get(
@@ -42,21 +41,20 @@ if __name__ == "__main__":
     employee_todos = json.loads(request_todos.text)
 
     """
-        Step 3: Create a list of tasks including user ID, username, task completion status, and task title.
+        Step 3: Create a list of tasks.
     """
     for dictionary in employee_todos:
         tasks.update({dictionary.get("title"): dictionary.get("completed")})
-        
-    """ 
+
+    """
         Step 4: Generate the CSV filename based on the user's ID.
     """
     USER_ID = user_id
 
     """
-        Step 5: Create and write the data to a CSV file with the generated filename.
+        Create and write the data to a CSV file.
     """
     with open(f'{USER_ID}.csv', 'w', encoding="UTF8", newline='') as user:
         writer = csv.writer(user)
-        writer.writerow(csvheader)
         for k, v in tasks.items():
             writer.writerow([USER_ID, userName, v, k])
