@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import csv
 import json
 import requests
@@ -42,11 +41,9 @@ if __name__ == "__main__":
         Step 3: Create a list of tasks including user ID, username, task completion status, and task title.
     """
     for dictionary in employee_todos:
-        tasks.append([dictionary.get("userId"), userName, dictionary.get("completed"), dictionary.get("title")])
+        tasks.update({dictionary.get("title"): dictionary.get("completed")})
         
-    task_list = []
     
-
     """ 
         Step 4: Generate the CSV filename based on the user's ID.
     """
@@ -58,4 +55,5 @@ if __name__ == "__main__":
     with open(f'{USER_ID}.csv', 'w', encoding="UTF8", newline='') as user:
         writer = csv.writer(user)
         writer.writerow(csvheader)
-        writer.writerows(tasks)
+        for k, v in tasks.items():
+            writer.writerow([USER_ID, userName, v, k])
