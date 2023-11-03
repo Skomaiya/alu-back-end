@@ -1,8 +1,12 @@
 #!/usr/bin/python3
+"""
+    python script that returns TODO list progress for a given employee ID
+"""
 import csv
 import json
 import requests
 from sys import argv
+
 
 """ 
     Define HTTP headers for the API requests
@@ -43,7 +47,6 @@ if __name__ == "__main__":
     for dictionary in employee_todos:
         tasks.update({dictionary.get("title"): dictionary.get("completed")})
         
-    
     """ 
         Step 4: Generate the CSV filename based on the user's ID.
     """
